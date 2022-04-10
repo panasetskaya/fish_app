@@ -20,7 +20,9 @@ data class FishItem(
     val location: String? = null,
 
     @Json(name = "Population")
-    val population: String? = null
+    val population: String? = null,
+
+    var isFavourite: Boolean = false
 ) {
     val imageGalleryString = imageGallery?.toString()
     val indexOne = imageGalleryString?.indexOf("src=")

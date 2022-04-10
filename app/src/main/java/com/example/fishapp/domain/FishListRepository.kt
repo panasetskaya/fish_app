@@ -7,6 +7,6 @@ interface FishListRepository {
 
     fun getFishList(): MutableLiveData<List<FishItem>>
 
-    fun addFishItem(fish: FishItem)
+    fun addFishItemToFav(fish: FishItem)
 
 }
