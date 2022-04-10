@@ -26,4 +26,13 @@ data class FishItem(
     val indexOne = imageGalleryString?.indexOf("src=")
     val indexTwo = imageGalleryString?.indexOf(", alt=")
     val imageUrl: String? = indexTwo?.let { indexOne?.let { it1 -> imageGalleryString?.substring(it1+4, it) } }
+    val cutLocation: String? =
+        if (location!=null) {
+            val indexUlOne = location.indexOf("<li>")+4
+            val indexUlTwo = location.indexOf("</li>")
+            if (indexUlOne!=-1 && indexUlTwo!=-1) {
+                indexUlOne.let { indexUlTwo.let { it1 -> location.substring(it, it1) } }
+            } else null
+        } else null
 }
+
