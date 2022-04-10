@@ -16,12 +16,12 @@ class FishListAdapter: ListAdapter<FishItem, FishListViewHolder>(FishItemCallbac
 
     override fun onBindViewHolder(holder: FishListViewHolder, position: Int) {
         val fishItem = getItem(position)
-        val placeholder = R.drawable.ic_launcher_background
+        val placeholder = R.drawable.fish
         holder.rvFishName.text = fishItem.name
         holder.rvFishScName.text = fishItem.scientificName
         holder.rvpopulation.text = fishItem.population
         holder.rvLocation.text = fishItem.cutLocation
-        Glide.with(holder.view.context).load(fishItem.imageUrl)
+        Glide.with(holder.view.context).load(fishItem.imageUrl).circleCrop()
             .placeholder(placeholder).into(holder.imageViewFish)
     }
 }
