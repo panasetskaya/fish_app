@@ -7,5 +7,5 @@ import retrofit2.http.GET
 interface ApiService {
 
     @GET("species")
-    fun getFishList(): Observable<ArrayList<FishItem>>
+    fun getFishList(): Observable<List<FishItem>>
 }

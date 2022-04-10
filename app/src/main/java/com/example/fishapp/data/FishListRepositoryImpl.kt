@@ -1,17 +1,20 @@
 package com.example.fishapp.data
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.fishapp.domain.FishItem
 import com.example.fishapp.domain.FishListRepository
+import io.reactivex.rxjava3.schedulers.Schedulers
 
 object FishListRepositoryImpl: FishListRepository {
 
-    private val fishList = mutableListOf<FishItem>()
     private val fishListLiveData = MutableLiveData<List<FishItem>>()
+    init {
+        loadData()
+    }
 
-    override fun getFishList(): LiveData<List<FishItem>> {
-        TODO("Not yet implemented")
+    override fun getFishList(): MutableLiveData<List<FishItem>> {
         return fishListLiveData
     }
 
@@ -19,7 +22,17 @@ object FishListRepositoryImpl: FishListRepository {
         TODO("Not yet implemented")
     }
 
-    private fun updateList() {
-        fishListLiveData.postValue(fishList.toList())
+    private fun loadData() {
+        ApiFactory.apiService.getFishList()
+            .map {
+                it.toMutableList()
+            }
+            .subscribeOn(Schedulers.io())
+            .observeOn(Schedulers.io())
+            .subscribe({
+                fishListLiveData.postValue(it)
+            },{
+                Log.d("MyRes", "Failure while loading data: ${it.message}")
+            })
     }
 }

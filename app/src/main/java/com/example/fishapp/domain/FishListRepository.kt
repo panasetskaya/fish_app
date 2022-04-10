@@ -1,10 +1,11 @@
 package com.example.fishapp.domain
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 
 interface FishListRepository {
 
-    fun getFishList(): LiveData<List<FishItem>>
+    fun getFishList(): MutableLiveData<List<FishItem>>
 
     fun addFishItem(fish: FishItem)
 
