@@ -23,5 +23,12 @@ class FishListAdapter: ListAdapter<FishItem, FishListViewHolder>(FishItemCallbac
         holder.rvLocation.text = fishItem.cutLocation
         Glide.with(holder.view.context).load(fishItem.imageUrl).circleCrop()
             .placeholder(placeholder).into(holder.imageViewFish)
+        holder.rvImageViewNotFav.setOnClickListener {
+
+
+        }
+        holder.rvImageViewFav.setOnClickListener {
+
+        }
     }
 }
