@@ -1,6 +1,5 @@
 package com.example.fishapp.presentation
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,26 +32,22 @@ class FishListAdapter: ListAdapter<FishItem, FishListViewHolder>(FishItemCallbac
 
     fun setupListeners(holder: FishListViewHolder, position: Int, fishItem: FishItem) {
         holder.rvImageViewFav.setOnClickListener {
-            changeOfHeart(holder, position)
+            changeOfHeart(holder)
             onHeartClickListener?.invoke(fishItem)
         }
         holder.rvImageViewNotFav.setOnClickListener {
-            changeOfHeart(holder, position)
+            changeOfHeart(holder)
             onHeartClickListener?.invoke(fishItem)
         }
     }
 
-    fun changeOfHeart(holder: FishListViewHolder, position: Int) {
+    fun changeOfHeart(holder: FishListViewHolder) {
         if (holder.rvImageViewFav.visibility == View.VISIBLE) {
-            Log.d("MyRes", "getItem(position).isFavourite")
             holder.rvImageViewNotFav.visibility = View.VISIBLE
             holder.rvImageViewFav.visibility = View.INVISIBLE
-            Log.d("MyRes", "!getItem(position).isFavourite")
         } else {
-            Log.d("MyRes", "!getItem(position).isFavourite")
             holder.rvImageViewNotFav.visibility = View.INVISIBLE
             holder.rvImageViewFav.visibility = View.VISIBLE
-            Log.d("MyRes", "getItem(position).isFavourite")
         }
     }
 
