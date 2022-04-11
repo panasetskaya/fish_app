@@ -21,8 +21,10 @@ object FishListRepositoryImpl: FishListRepository {
     }
 
     override fun addFishItemToFav(fish: FishItem) {
-        val index = fishList.indexOf(fish)
-        fishList[index].isFavourite = !fishList[index].isFavourite
+        val oldFish = fishList.find { it.scientificName == fish.scientificName
+        } ?: throw RuntimeException("Fish with scientificName ${fish.scientificName} not found")
+        val index = fishList.indexOf(oldFish)
+        fishList[index] = fish
         updateList()
     }
 

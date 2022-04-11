@@ -16,5 +16,8 @@ class FishListViewModel: ViewModel() {
 
     val fishListLiveData = getFishListUseCase.getFishList()
 
-    fun addToFav(fish: FishItem) = addFishItemToFavUseCase.addFishItemToFav(fish)
+    fun addToFav(fish: FishItem) {
+        val newFish = fish.copy(isFavourite = !fish.isFavourite)
+        addFishItemToFavUseCase.addFishItemToFav(newFish)
+    }
 }

@@ -22,6 +22,7 @@ class FishListAdapter: ListAdapter<FishItem, FishListViewHolder>(FishItemCallbac
     override fun onBindViewHolder(holder: FishListViewHolder, position: Int) {
         val fishItem = getItem(position)
         val placeholder = R.drawable.fish
+        changeOfHeart(holder, position)
         holder.rvFishName.text = fishItem.name
         holder.rvFishScName.text = fishItem.scientificName
         holder.rvpopulation.text = fishItem.population
@@ -29,17 +30,25 @@ class FishListAdapter: ListAdapter<FishItem, FishListViewHolder>(FishItemCallbac
         Glide.with(holder.view.context).load(fishItem.imageUrl).circleCrop()
             .placeholder(placeholder).into(holder.imageViewFish)
         holder.rvImageViewNotFav.setOnClickListener {
-            holder.rvImageViewNotFav.visibility = View.GONE
-            holder.rvImageViewFav.visibility = View.VISIBLE
             onWhiteHeartClickListener?.invoke(fishItem)
+            changeOfHeart(holder, position)
             true
         }
         holder.rvImageViewFav.setOnClickListener {
-            holder.rvImageViewNotFav.visibility = View.VISIBLE
-            holder.rvImageViewFav.visibility = View.GONE
             onRedHeartClickListener?.invoke(fishItem)
+            changeOfHeart(holder, position)
             true
 
+        }
+    }
+
+    fun changeOfHeart(holder: FishListViewHolder, position: Int) {
+        if (getItem(position).isFavourite) {
+            holder.rvImageViewNotFav.visibility = View.GONE
+            holder.rvImageViewFav.visibility = View.VISIBLE
+        } else {
+            holder.rvImageViewNotFav.visibility = View.VISIBLE
+            holder.rvImageViewFav.visibility = View.GONE
         }
     }
 }
