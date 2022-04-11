@@ -27,5 +27,11 @@ class MainActivity : AppCompatActivity() {
             fishListAdapter.submitList(it)
             pBar.visibility = View.GONE
         }
+        setupClickListeners()
+    }
+
+    fun setupClickListeners() {
+        fishListAdapter.onWhiteHeartClickListener = {viewModel.addToFav(it)}
+        fishListAdapter.onRedHeartClickListener = {viewModel.addToFav(it)}
     }
 }

@@ -1,6 +1,7 @@
 package com.example.fishapp.presentation
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import com.bumptech.glide.Glide
@@ -9,6 +10,10 @@ import com.example.fishapp.domain.FishItem
 
 
 class FishListAdapter: ListAdapter<FishItem, FishListViewHolder>(FishItemCallback()) {
+
+    var onRedHeartClickListener: ((FishItem) -> Unit)? = null
+    var onWhiteHeartClickListener: ((FishItem) -> Unit)? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FishListViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.fish_item, parent, false)
         return  FishListViewHolder(view)
@@ -24,10 +29,16 @@ class FishListAdapter: ListAdapter<FishItem, FishListViewHolder>(FishItemCallbac
         Glide.with(holder.view.context).load(fishItem.imageUrl).circleCrop()
             .placeholder(placeholder).into(holder.imageViewFish)
         holder.rvImageViewNotFav.setOnClickListener {
-
-
+            holder.rvImageViewNotFav.visibility = View.GONE
+            holder.rvImageViewFav.visibility = View.VISIBLE
+            onWhiteHeartClickListener?.invoke(fishItem)
+            true
         }
         holder.rvImageViewFav.setOnClickListener {
+            holder.rvImageViewNotFav.visibility = View.VISIBLE
+            holder.rvImageViewFav.visibility = View.GONE
+            onRedHeartClickListener?.invoke(fishItem)
+            true
 
         }
     }
