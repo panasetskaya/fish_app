@@ -113,7 +113,6 @@
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_margin="4dp"
-            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@+id/imageViewFishImage"
             app:layout_constraintStart_toStartOf="@+id/imageViewFishImage"
             app:srcCompat="@drawable/heart_icon" />

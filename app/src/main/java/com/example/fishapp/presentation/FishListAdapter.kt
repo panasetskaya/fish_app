@@ -22,7 +22,7 @@ class FishListAdapter: ListAdapter<FishItem, FishListViewHolder>(FishItemCallbac
     override fun onBindViewHolder(holder: FishListViewHolder, position: Int) {
         val fishItem = getItem(position)
         val placeholder = R.drawable.fish
-        changeOfHeart(holder, position)
+        setHearts(holder, position)
         holder.rvFishName.text = fishItem.name
         holder.rvFishScName.text = fishItem.scientificName
         holder.rvpopulation.text = fishItem.population
@@ -30,13 +30,13 @@ class FishListAdapter: ListAdapter<FishItem, FishListViewHolder>(FishItemCallbac
         Glide.with(holder.view.context).load(fishItem.imageUrl).circleCrop()
             .placeholder(placeholder).into(holder.imageViewFish)
         holder.rvImageViewNotFav.setOnClickListener {
-            onWhiteHeartClickListener?.invoke(fishItem)
             changeOfHeart(holder, position)
+            onWhiteHeartClickListener?.invoke(fishItem)
             true
         }
         holder.rvImageViewFav.setOnClickListener {
-            onRedHeartClickListener?.invoke(fishItem)
             changeOfHeart(holder, position)
+            onRedHeartClickListener?.invoke(fishItem)
             true
 
         }
@@ -44,11 +44,21 @@ class FishListAdapter: ListAdapter<FishItem, FishListViewHolder>(FishItemCallbac
 
     fun changeOfHeart(holder: FishListViewHolder, position: Int) {
         if (getItem(position).isFavourite) {
-            holder.rvImageViewNotFav.visibility = View.GONE
+            holder.rvImageViewNotFav.visibility = View.VISIBLE
+            holder.rvImageViewFav.visibility = View.INVISIBLE
+        } else {
+            holder.rvImageViewNotFav.visibility = View.INVISIBLE
+            holder.rvImageViewFav.visibility = View.VISIBLE
+        }
+    }
+
+    fun setHearts(holder: FishListViewHolder, position: Int) {
+        if (getItem(position).isFavourite) {
+            holder.rvImageViewNotFav.visibility = View.INVISIBLE
             holder.rvImageViewFav.visibility = View.VISIBLE
         } else {
             holder.rvImageViewNotFav.visibility = View.VISIBLE
-            holder.rvImageViewFav.visibility = View.GONE
+            holder.rvImageViewFav.visibility = View.INVISIBLE
         }
     }
 }
