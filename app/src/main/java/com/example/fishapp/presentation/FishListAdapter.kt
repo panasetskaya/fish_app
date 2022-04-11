@@ -1,5 +1,6 @@
 package com.example.fishapp.presentation
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,15 +9,13 @@ import com.bumptech.glide.Glide
 import com.example.fishapp.R
 import com.example.fishapp.domain.FishItem
 
-
 class FishListAdapter: ListAdapter<FishItem, FishListViewHolder>(FishItemCallback()) {
 
-    var onRedHeartClickListener: ((FishItem) -> Unit)? = null
-    var onWhiteHeartClickListener: ((FishItem) -> Unit)? = null
+    var onHeartClickListener: ((FishItem) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FishListViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.fish_item, parent, false)
-        return  FishListViewHolder(view)
+        return FishListViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: FishListViewHolder, position: Int) {
@@ -29,26 +28,31 @@ class FishListAdapter: ListAdapter<FishItem, FishListViewHolder>(FishItemCallbac
         holder.rvLocation.text = fishItem.cutLocation
         Glide.with(holder.view.context).load(fishItem.imageUrl).circleCrop()
             .placeholder(placeholder).into(holder.imageViewFish)
-        holder.rvImageViewNotFav.setOnClickListener {
-            changeOfHeart(holder, position)
-            onWhiteHeartClickListener?.invoke(fishItem)
-            true
-        }
+        setupListeners(holder, position, fishItem)
+    }
+
+    fun setupListeners(holder: FishListViewHolder, position: Int, fishItem: FishItem) {
         holder.rvImageViewFav.setOnClickListener {
             changeOfHeart(holder, position)
-            onRedHeartClickListener?.invoke(fishItem)
-            true
-
+            onHeartClickListener?.invoke(fishItem)
+        }
+        holder.rvImageViewNotFav.setOnClickListener {
+            changeOfHeart(holder, position)
+            onHeartClickListener?.invoke(fishItem)
         }
     }
 
     fun changeOfHeart(holder: FishListViewHolder, position: Int) {
-        if (getItem(position).isFavourite) {
+        if (holder.rvImageViewFav.visibility == View.VISIBLE) {
+            Log.d("MyRes", "getItem(position).isFavourite")
             holder.rvImageViewNotFav.visibility = View.VISIBLE
             holder.rvImageViewFav.visibility = View.INVISIBLE
+            Log.d("MyRes", "!getItem(position).isFavourite")
         } else {
+            Log.d("MyRes", "!getItem(position).isFavourite")
             holder.rvImageViewNotFav.visibility = View.INVISIBLE
             holder.rvImageViewFav.visibility = View.VISIBLE
+            Log.d("MyRes", "getItem(position).isFavourite")
         }
     }
 
