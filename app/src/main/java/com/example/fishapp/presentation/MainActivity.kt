@@ -23,6 +23,7 @@ class MainActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this)[FishListViewModel::class.java]
         fishListAdapter = FishListAdapter()
         rVFishList.adapter = fishListAdapter
+        viewModel.getList()
         viewModel.fishListLiveData.observe(this) {
             fishListAdapter.submitList(it)
             pBar.visibility = View.GONE

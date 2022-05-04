@@ -9,23 +9,22 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 
 object FishListRepositoryImpl: FishListRepository {
 
-    private val fishListLiveData = MutableLiveData<List<FishItem>>()
     private var fishList = mutableListOf<FishItem>()
 
     init {
         loadData()
     }
 
-    override fun getFishList(): MutableLiveData<List<FishItem>> {
-        return fishListLiveData
+    override fun getFishList(): List<FishItem> {
+        return fishList.toList()
     }
 
     override fun addFishItemToFav(fish: FishItem) {
-        val oldFish = fishList.find { it.scientificName == fish.scientificName
-        } ?: throw RuntimeException("Fish with scientificName ${fish.scientificName} not found")
-        val index = fishList.indexOf(oldFish)
-        fishList[index] = fish
-        updateList()
+        TODO()
+    }
+
+    override fun removeFromFavourites(fish: FishItem) {
+        TODO("Not yet implemented")
     }
 
     private fun loadData() {
@@ -37,13 +36,8 @@ object FishListRepositoryImpl: FishListRepository {
             .observeOn(Schedulers.io())
             .subscribe({
                 fishList = it
-                updateList()
             },{
                 Log.d("MyRes", "Failure while loading data: ${it.message}")
             })
-    }
-
-    fun updateList() {
-        fishListLiveData.postValue(fishList)
     }
 }
