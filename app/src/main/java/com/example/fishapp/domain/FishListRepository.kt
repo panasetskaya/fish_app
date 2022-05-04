@@ -5,8 +5,11 @@ import androidx.lifecycle.MutableLiveData
 
 interface FishListRepository {
 
-    fun getFishList(): MutableLiveData<List<FishItem>>
+    suspend fun getFishList(): List<FishItem>
 
-    fun addFishItem(fish: FishItem)
+    suspend fun addFishItemToFav(fish: FishItem)
 
+    suspend fun removeFromFavourites(fish: FishItem)
+
+    suspend fun existsInFav(name: String?): Boolean
 }

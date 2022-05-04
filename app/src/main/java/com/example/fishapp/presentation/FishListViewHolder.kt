@@ -12,4 +12,6 @@ class FishListViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
     val imageViewFish = view.findViewById<ImageView>(R.id.imageViewFishImage)
     val rvpopulation = view.findViewById<TextView>(R.id.textViewPopulation)
     val rvLocation = view.findViewById<TextView>(R.id.textViewLocation)
+    val rvImageViewFav = view.findViewById<ImageView>(R.id.imageViewFav)
+    val rvImageViewNotFav = view.findViewById<ImageView>(R.id.imageViewNotFav)
 }
