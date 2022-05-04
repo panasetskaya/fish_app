@@ -20,14 +20,20 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         rVFishList = findViewById(R.id.rVFishList)
         pBar = findViewById(R.id.progressBarFishItem)
-        viewModel = ViewModelProvider(this)[FishListViewModel::class.java]
+        viewModel = ViewModelProvider(this, FishListViewModelFactory(application))[FishListViewModel::class.java]
         fishListAdapter = FishListAdapter()
         rVFishList.adapter = fishListAdapter
-        viewModel.getList()
+        viewModel.getFishList()
         viewModel.fishListLiveData.observe(this) {
             fishListAdapter.submitList(it)
             pBar.visibility = View.GONE
         }
-        fishListAdapter.onHeartClickListener = {viewModel.addToFav(it)}
+        fishListAdapter.onHeartClickListener = {
+            if (viewModel.checkInFav(it.name)) {
+                viewModel.removeFromFav(it)
+            } else {
+                viewModel.addToFav(it)
+            }
+        }
     }
 }

@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 
 class GetFishListUseCase(private val repository: FishListRepository) {
 
-    fun getFishList(): List<FishItem> {
+    suspend fun getFishList(): List<FishItem> {
         return repository.getFishList()
     }
 }

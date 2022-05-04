@@ -1,43 +1,35 @@
 package com.example.fishapp.data
 
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.fishapp.domain.FishItem
 import com.example.fishapp.domain.FishListRepository
+import io.reactivex.rxjava3.core.Completable
+import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.schedulers.Schedulers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
-object FishListRepositoryImpl: FishListRepository {
+class FishListRepositoryImpl(context: Context): FishListRepository {
 
-    private var fishList = mutableListOf<FishItem>()
+    private val database = FavouriteFishDatabase.getInstance(context)
 
-    init {
-        loadData()
+    override suspend fun getFishList(): List<FishItem> {
+        Log.i("MyRes", ApiFactory.apiService.getFishList().toString())
+        return ApiFactory.apiService.getFishList()
     }
 
-    override fun getFishList(): List<FishItem> {
-        return fishList.toList()
+    override suspend fun addFishItemToFav(fish: FishItem) {
+        database.fishDao().addFishToFav(fish)
     }
 
-    override fun addFishItemToFav(fish: FishItem) {
-        TODO()
+    override suspend fun removeFromFavourites(fish: FishItem) {
+        database.fishDao().removeFishFromFav(fish)
     }
 
-    override fun removeFromFavourites(fish: FishItem) {
-        TODO("Not yet implemented")
-    }
-
-    private fun loadData() {
-        ApiFactory.apiService.getFishList()
-            .map {
-                it.toMutableList()
-            }
-            .subscribeOn(Schedulers.io())
-            .observeOn(Schedulers.io())
-            .subscribe({
-                fishList = it
-            },{
-                Log.d("MyRes", "Failure while loading data: ${it.message}")
-            })
+    override suspend fun existsInFav(name: String?): Boolean {
+        return database.fishDao().existsInFav(name)
     }
 }

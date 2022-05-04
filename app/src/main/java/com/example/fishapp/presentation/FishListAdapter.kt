@@ -20,44 +20,36 @@ class FishListAdapter: ListAdapter<FishItem, FishListViewHolder>(FishItemCallbac
     override fun onBindViewHolder(holder: FishListViewHolder, position: Int) {
         val fishItem = getItem(position)
         val placeholder = R.drawable.fish
-        setHearts(holder, position)
+        setupHearts(holder,fishItem)
         holder.rvFishName.text = fishItem.name
         holder.rvFishScName.text = fishItem.scientificName
         holder.rvpopulation.text = fishItem.population
         holder.rvLocation.text = fishItem.cutLocation
         Glide.with(holder.view.context).load(fishItem.imageUrl).circleCrop()
             .placeholder(placeholder).into(holder.imageViewFish)
-        setupListeners(holder, position, fishItem)
+        setupListeners(holder, fishItem)
     }
 
-    fun setupListeners(holder: FishListViewHolder, position: Int, fishItem: FishItem) {
+    fun setupListeners(holder: FishListViewHolder, fishItem: FishItem) {
         holder.rvImageViewFav.setOnClickListener {
-            changeOfHeart(holder)
             onHeartClickListener?.invoke(fishItem)
+            fishItem.favourite = false
+            setupHearts(holder,fishItem)
         }
         holder.rvImageViewNotFav.setOnClickListener {
-            changeOfHeart(holder)
+            fishItem.favourite = true
             onHeartClickListener?.invoke(fishItem)
+            setupHearts(holder,fishItem)
         }
     }
 
-    fun changeOfHeart(holder: FishListViewHolder) {
-        if (holder.rvImageViewFav.visibility == View.VISIBLE) {
-            holder.rvImageViewNotFav.visibility = View.VISIBLE
-            holder.rvImageViewFav.visibility = View.INVISIBLE
-        } else {
-            holder.rvImageViewNotFav.visibility = View.INVISIBLE
-            holder.rvImageViewFav.visibility = View.VISIBLE
-        }
-    }
-
-    fun setHearts(holder: FishListViewHolder, position: Int) {
-        if (getItem(position).isFavourite) {
-            holder.rvImageViewNotFav.visibility = View.INVISIBLE
+    fun setupHearts(holder: FishListViewHolder, fishItem: FishItem) {
+        if (fishItem.favourite) {
+            holder.rvImageViewNotFav.visibility = View.GONE
             holder.rvImageViewFav.visibility = View.VISIBLE
         } else {
             holder.rvImageViewNotFav.visibility = View.VISIBLE
-            holder.rvImageViewFav.visibility = View.INVISIBLE
+            holder.rvImageViewFav.visibility = View.GONE
         }
     }
 }
